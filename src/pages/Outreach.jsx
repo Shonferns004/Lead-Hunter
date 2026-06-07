@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 import { apiFetch } from '../lib/constants';
+import { SkeletonBlock, SkeletonText } from '../components/Skeleton';
 
 const STATUSES = ['New', 'Contacted'];
 
 export default function Outreach({ showToast }) {
   const [templates, setTemplates] = useState([]);
+  const [templatesLoading, setTemplatesLoading] = useState(true);
   const [activeIndex, setActiveIndex] = useState(0);
   const [name, setName] = useState('');
   const [body, setBody] = useState('');
@@ -28,6 +30,7 @@ export default function Outreach({ showToast }) {
   useEffect(() => { countLeads(); }, [targetStatus]);
 
   async function loadTemplates() {
+    setTemplatesLoading(true);
     try {
       const data = await apiFetch('/api/templates');
       if (data && data.length > 0) {
@@ -46,7 +49,17 @@ export default function Outreach({ showToast }) {
         setBody(fallback[0].body);
       }
     } catch {
+      const fallback = [
+        { id: null, name: 'Restaurant Outreach', body: `Hi {{name}}, I noticed {{business}} doesn't have a website yet. I build professional restaurant websites starting from AED 1,500 — with your menu, photos, and online booking. Would you be interested? I can show you examples.` },
+        { id: null, name: 'Salon / Shop Outreach', body: `Hi {{name}}, I help local businesses like {{business}} get online with a professional website. Starting from AED 1,200. Customers can find you on Google and WhatsApp directly from your site. Interested to see what it looks like for {{category}} businesses?` },
+      ];
+      setTemplates(fallback);
+      setActiveIndex(0);
+      setName(fallback[0].name);
+      setBody(fallback[0].body);
       showToast('Could not load templates from server');
+    } finally {
+      setTemplatesLoading(false);
     }
   }
 
@@ -259,21 +272,30 @@ export default function Outreach({ showToast }) {
               </button>
             </div>
             <div className="p-2">
-              {templates.map((t, i) => (
-                <div key={i} onClick={() => selectTemplate(i)}
-                  className={`flex items-center justify-between px-3 py-2.5 rounded-lg cursor-pointer transition-colors ${
-                    activeIndex === i ? 'bg-primary-container/20' : 'hover:bg-surface-container-high'
-                  }`}>
-                  <div className="flex-1 min-w-0">
-                    <div className="text-sm font-medium text-on-surface">{t.name}</div>
-                    <div className="text-xs text-on-surface-variant truncate mt-0.5">{(t.body || '').substring(0, 60)}...</div>
+              {templatesLoading ? (
+                Array.from({ length: 3 }).map((_, i) => (
+                  <div key={i} className="px-3 py-2.5 space-y-2">
+                    <SkeletonBlock className="h-4 w-3/5" />
+                    <SkeletonBlock className="h-3 w-4/5" />
                   </div>
-                  <button onClick={e => { e.stopPropagation(); deleteTemplate(i); }}
-                    className="ml-2 text-on-surface-variant hover:text-red-400 transition-colors p-1">
-                    <span className="material-symbols-outlined text-[16px]">delete</span>
-                  </button>
-                </div>
-              ))}
+                ))
+              ) : (
+                templates.map((t, i) => (
+                  <div key={i} onClick={() => selectTemplate(i)}
+                    className={`flex items-center justify-between px-3 py-2.5 rounded-lg cursor-pointer transition-colors ${
+                      activeIndex === i ? 'bg-primary-container/20' : 'hover:bg-surface-container-high'
+                    }`}>
+                    <div className="flex-1 min-w-0">
+                      <div className="text-sm font-medium text-on-surface">{t.name}</div>
+                      <div className="text-xs text-on-surface-variant truncate mt-0.5">{(t.body || '').substring(0, 60)}...</div>
+                    </div>
+                    <button onClick={e => { e.stopPropagation(); deleteTemplate(i); }}
+                      className="ml-2 text-on-surface-variant hover:text-red-400 transition-colors p-1">
+                      <span className="material-symbols-outlined text-[16px]">delete</span>
+                    </button>
+                  </div>
+                ))
+              )}
             </div>
           </div>
         </div>

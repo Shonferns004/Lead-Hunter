@@ -17,7 +17,7 @@ const bottomNav = [
   { path: '/search', label: 'Search', icon: 'manage_search' },
   { path: '/leads', label: 'Leads', icon: 'database' },
   { path: '/messages', label: 'Outreach', icon: 'send' },
-  { path: '/settings', label: 'Settings', icon: 'settings' },
+  { path: '/history', label: 'History', icon: 'history' },
 ];
 
 export default function Layout({ leadCount, onLogout }) {
@@ -92,22 +92,6 @@ export default function Layout({ leadCount, onLogout }) {
               {item.label}
             </NavLink>
           ))}
-
-          <div className="mt-4 border-t border-border-subtle pt-3">
-            <NavLink
-              to="/settings"
-              className={({ isActive }) =>
-                `flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors ${
-                  isActive
-                    ? 'bg-primary-container/20 text-primary font-medium'
-                    : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high'
-                }`
-              }
-            >
-              <span className="material-symbols-outlined text-[18px]">settings</span>
-              Settings
-            </NavLink>
-          </div>
         </nav>
 
         {/* User profile */}

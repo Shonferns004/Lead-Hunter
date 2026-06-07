@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { supabase } from '../lib/supabase';
 import { apiFetch } from '../lib/constants';
+import { SkeletonBlock, SkeletonTableRow } from '../components/Skeleton';
 
 const statusStyles = {
   Contacted: 'bg-secondary-container/20 text-secondary border-secondary/30',
@@ -167,7 +168,7 @@ export default function History({ showToast, refreshCounts }) {
             </thead>
             <tbody className="divide-y divide-border-subtle">
               {loading ? (
-                <tr><td colSpan={6} className="text-center py-16"><span className="material-symbols-outlined animate-spin text-on-surface-variant text-2xl">progress_activity</span></td></tr>
+                Array.from({ length: 5 }).map((_, i) => <SkeletonTableRow key={i} cols={6} />)
               ) : leads.length === 0 ? (
                 <tr><td colSpan={6}>
                   <div className="text-center py-16 text-on-surface-variant">
@@ -232,34 +233,54 @@ export default function History({ showToast, refreshCounts }) {
 
       {/* Analytical Bento Grid */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-gutter">
-        <div className="glass-card p-stack-md rounded-xl">
-          <div className="flex justify-between items-start mb-4">
-            <span className="material-symbols-outlined text-primary p-2 bg-primary/10 rounded-lg">forum</span>
-            <span className="text-secondary text-label-sm font-label-sm">+12%</span>
-          </div>
-          <p className="text-on-surface-variant text-label-sm font-label-sm uppercase opacity-70">Total Responses</p>
-          <h3 className="text-headline-md font-headline-md text-on-surface">{respondedCount}</h3>
-        </div>
-        <div className="glass-card p-stack-md rounded-xl">
-          <div className="flex justify-between items-start mb-4">
-            <span className="material-symbols-outlined text-secondary p-2 bg-secondary/10 rounded-lg">check_circle</span>
-            <span className="text-secondary text-label-sm font-label-sm">+5%</span>
-          </div>
-          <p className="text-on-surface-variant text-label-sm font-label-sm uppercase opacity-70">Conversion Rate</p>
-          <h3 className="text-headline-md font-headline-md text-on-surface">{conversionRate}%</h3>
-        </div>
-        <div className="glass-card p-stack-md rounded-xl col-span-2 relative overflow-hidden group">
-          <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-transparent pointer-events-none"></div>
-          <div className="relative z-10 h-full flex flex-col justify-between">
-            <div>
-              <p className="text-on-surface-variant text-label-sm font-label-sm uppercase opacity-70">Outreach Efficiency</p>
-              <h3 className="text-headline-md font-headline-md text-on-surface">{efficiency}/100</h3>
+        {loading ? (
+          <>
+            <div className="glass-card p-stack-md rounded-xl space-y-3">
+              <SkeletonBlock className="h-4 w-24" />
+              <SkeletonBlock className="h-8 w-12" />
             </div>
-            <div className="w-full bg-surface-variant h-2 rounded-full mt-4 overflow-hidden">
-              <div className="bg-primary h-full group-hover:shadow-[0_0_10px_rgba(124,58,237,0.5)] transition-all duration-700" style={{ width: `${efficiency}%` }}></div>
+            <div className="glass-card p-stack-md rounded-xl space-y-3">
+              <SkeletonBlock className="h-4 w-24" />
+              <SkeletonBlock className="h-8 w-12" />
             </div>
-          </div>
-        </div>
+            <div className="glass-card p-stack-md rounded-xl col-span-2 space-y-3">
+              <SkeletonBlock className="h-4 w-32" />
+              <SkeletonBlock className="h-8 w-16" />
+              <SkeletonBlock className="h-2 w-full rounded-full" />
+            </div>
+          </>
+        ) : (
+          <>
+            <div className="glass-card p-stack-md rounded-xl">
+              <div className="flex justify-between items-start mb-4">
+                <span className="material-symbols-outlined text-primary p-2 bg-primary/10 rounded-lg">forum</span>
+                <span className="text-secondary text-label-sm font-label-sm">+12%</span>
+              </div>
+              <p className="text-on-surface-variant text-label-sm font-label-sm uppercase opacity-70">Total Responses</p>
+              <h3 className="text-headline-md font-headline-md text-on-surface">{respondedCount}</h3>
+            </div>
+            <div className="glass-card p-stack-md rounded-xl">
+              <div className="flex justify-between items-start mb-4">
+                <span className="material-symbols-outlined text-secondary p-2 bg-secondary/10 rounded-lg">check_circle</span>
+                <span className="text-secondary text-label-sm font-label-sm">+5%</span>
+              </div>
+              <p className="text-on-surface-variant text-label-sm font-label-sm uppercase opacity-70">Conversion Rate</p>
+              <h3 className="text-headline-md font-headline-md text-on-surface">{conversionRate}%</h3>
+            </div>
+            <div className="glass-card p-stack-md rounded-xl col-span-2 relative overflow-hidden group">
+              <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-transparent pointer-events-none"></div>
+              <div className="relative z-10 h-full flex flex-col justify-between">
+                <div>
+                  <p className="text-on-surface-variant text-label-sm font-label-sm uppercase opacity-70">Outreach Efficiency</p>
+                  <h3 className="text-headline-md font-headline-md text-on-surface">{efficiency}/100</h3>
+                </div>
+                <div className="w-full bg-surface-variant h-2 rounded-full mt-4 overflow-hidden">
+                  <div className="bg-primary h-full group-hover:shadow-[0_0_10px_rgba(124,58,237,0.5)] transition-all duration-700" style={{ width: `${efficiency}%` }}></div>
+                </div>
+              </div>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );

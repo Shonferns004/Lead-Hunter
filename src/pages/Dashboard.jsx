@@ -2,13 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { apiFetch } from '../lib/constants';
+import { SkeletonBlock, SkeletonText } from '../components/Skeleton';
 
 export default function Dashboard({ showToast }) {
   const [stats, setStats] = useState({ total: 0, contacted: 0 });
   const [recentActivity, setRecentActivity] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    loadData();
+    loadData().finally(() => setLoading(false));
   }, []);
 
   useEffect(() => {
@@ -70,24 +72,36 @@ export default function Dashboard({ showToast }) {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div className="glass-card rounded-xl p-5">
-          <div className="flex items-center justify-between mb-3">
-            <span className="text-[11px] uppercase tracking-wider text-on-surface-variant font-label-sm">Leads Found</span>
-            <span className="material-symbols-outlined text-on-surface-variant/40 text-2xl">database</span>
-          </div>
-          <div className="text-3xl font-bold font-headline-md text-on-surface">{stats.total}</div>
-          <div className="text-xs text-on-surface-variant mt-1">Total leads in the system</div>
+      {loading ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {[0, 1].map(i => (
+            <div key={i} className="glass-card rounded-xl p-5 space-y-3">
+              <SkeletonBlock className="h-3 w-24" />
+              <SkeletonBlock className="h-8 w-16" />
+              <SkeletonBlock className="h-3 w-36" />
+            </div>
+          ))}
         </div>
-        <div className="glass-card rounded-xl p-5">
-          <div className="flex items-center justify-between mb-3">
-            <span className="text-[11px] uppercase tracking-wider text-on-surface-variant font-label-sm">Messages Sent</span>
-            <span className="material-symbols-outlined text-on-surface-variant/40 text-2xl">send</span>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="glass-card rounded-xl p-5">
+            <div className="flex items-center justify-between mb-3">
+              <span className="text-[11px] uppercase tracking-wider text-on-surface-variant font-label-sm">Leads Found</span>
+              <span className="material-symbols-outlined text-on-surface-variant/40 text-2xl">database</span>
+            </div>
+            <div className="text-3xl font-bold font-headline-md text-on-surface">{stats.total}</div>
+            <div className="text-xs text-on-surface-variant mt-1">Total leads in the system</div>
           </div>
-          <div className="text-3xl font-bold font-headline-md text-on-surface">{stats.contacted}</div>
-          <div className="text-xs text-on-surface-variant mt-1">WhatsApp outreach sent</div>
+          <div className="glass-card rounded-xl p-5">
+            <div className="flex items-center justify-between mb-3">
+              <span className="text-[11px] uppercase tracking-wider text-on-surface-variant font-label-sm">Messages Sent</span>
+              <span className="material-symbols-outlined text-on-surface-variant/40 text-2xl">send</span>
+            </div>
+            <div className="text-3xl font-bold font-headline-md text-on-surface">{stats.contacted}</div>
+            <div className="text-xs text-on-surface-variant mt-1">WhatsApp outreach sent</div>
+          </div>
         </div>
-      </div>
+      )}
 
       <div className="glass-card rounded-xl">
         <div className="flex items-center justify-between px-5 py-4 border-b border-border-subtle">
@@ -98,7 +112,19 @@ export default function Dashboard({ showToast }) {
           <Link to="/activity" className="text-xs text-primary hover:text-primary/80 transition-colors">View all</Link>
         </div>
         <div className="p-4">
-          {recentActivity.length === 0 ? (
+          {loading ? (
+            <div className="space-y-3">
+              {Array.from({ length: 4 }).map((_, i) => (
+                <div key={i} className="flex gap-3 py-2.5">
+                  <SkeletonBlock className="w-7 h-7 rounded-full shrink-0" />
+                  <div className="flex-1 space-y-2">
+                    <SkeletonBlock className="h-3 w-2/5" />
+                    <SkeletonBlock className="h-3 w-1/4" />
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : recentActivity.length === 0 ? (
             <div className="text-center py-8 text-on-surface-variant">
               <span className="material-symbols-outlined text-3xl block mb-2">playlist_add</span>
               <p className="text-sm">No activity yet — start by running a lead search</p>

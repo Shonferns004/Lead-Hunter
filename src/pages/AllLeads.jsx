@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { apiFetch } from '../lib/constants';
+import { SkeletonCard, SkeletonTableRow } from '../components/Skeleton';
 
 const PAGE_SIZE = 10;
 
@@ -13,7 +14,7 @@ function LeadCard({ lead, onContacted, onDelete }) {
           <div className="font-medium text-[#e1e2eb] text-sm truncate">{lead.name}</div>
           <div className="text-xs text-[#ccc3d8] truncate mt-0.5">{lead.address}</div>
         </div>
-        <span className="text-[10px] px-1.5 py-0.5 rounded bg-[#272a31] text-[#ccc3d8] whitespace-nowrap shrink-0">{lead.category}</span>
+        <span className="text-[11px] px-2.5 py-0.5 rounded-full bg-surface-variant text-on-surface border border-outline-variant whitespace-nowrap shrink-0">{lead.category}</span>
       </div>
       <div className="flex items-center justify-between">
         <a href={`tel:${lead.phone}`} className="text-xs text-[#4edea3] font-medium truncate min-w-0">{lead.phone}</a>
@@ -139,9 +140,25 @@ export default function AllLeads({ showToast, refreshCounts }) {
       </div>
 
       {loading ? (
-        <div className="flex justify-center py-10">
-          <span className="material-symbols-outlined animate-spin text-[#ccc3d8] text-xl">progress_activity</span>
-        </div>
+        <>
+          <div className="md:hidden space-y-2.5">
+            {Array.from({ length: 4 }).map((_, i) => <SkeletonCard key={i} />)}
+          </div>
+          <div className="hidden md:block overflow-x-auto rounded-xl border border-[#374151]">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="bg-[#272a31] border-b border-[#374151]">
+                  {['Business', 'Category', 'Phone', 'Created', 'Actions'].map(h => (
+                    <th key={h} className="text-left px-4 py-3 text-[10px] uppercase tracking-wider text-[#ccc3d8] font-medium">{h}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {Array.from({ length: 6 }).map((_, i) => <SkeletonTableRow key={i} cols={5} />)}
+              </tbody>
+            </table>
+          </div>
+        </>
       ) : leads.length === 0 ? (
         <div className="text-center py-10 text-[#ccc3d8]">
           <span className="material-symbols-outlined text-2xl block mb-1">database</span>
@@ -194,7 +211,7 @@ export default function AllLeads({ showToast, refreshCounts }) {
                         <div className="text-xs text-[#ccc3d8]">{b.address}</div>
                       </td>
                       <td className="px-4 py-3">
-                        <span className="text-[11px] px-2 py-1 rounded bg-[#272a31] text-[#ccc3d8]">{b.category}</span>
+                        <span className="text-xs px-3 py-1 rounded-full bg-surface-variant text-on-surface border border-outline-variant">{b.category}</span>
                       </td>
                       <td className="px-4 py-3">
                         <a href={`tel:${b.phone}`} className="text-[#4edea3] font-medium">{b.phone}</a>

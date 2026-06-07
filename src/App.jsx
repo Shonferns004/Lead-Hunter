@@ -8,7 +8,6 @@ import LeadSearch from './pages/LeadSearch';
 import AllLeads from './pages/AllLeads';
 import Outreach from './pages/Outreach';
 import History from './pages/History';
-import Settings from './pages/Settings';
 import { supabase } from './lib/supabase';
 import { apiFetch, setAuthToken } from './lib/constants';
 
@@ -78,7 +77,6 @@ export default function App() {
           <Route path="/leads" element={<AllLeads showToast={showToast} refreshCounts={refreshCounts} />} />
           <Route path="/messages" element={<Outreach showToast={showToast} />} />
           <Route path="/history" element={<History showToast={showToast} refreshCounts={refreshCounts} />} />
-          <Route path="/settings" element={<Settings showToast={showToast} />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Route>
       </Routes>

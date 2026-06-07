@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { supabase } from '../lib/supabase';
 import { apiFetch } from '../lib/constants';
+import { SkeletonCard } from '../components/Skeleton';
 
 export default function LeadSearch({ showToast, refreshCounts }) {
   const [niche, setNiche] = useState('');
