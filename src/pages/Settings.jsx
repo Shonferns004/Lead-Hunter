@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 const freqOptions = ['Conservative', 'Balanced', 'Aggressive', 'Elite Velocity'];
 
-export default function Settings({ showToast }) {
+export default function Settings({ showToast, onLogout, onInstallApp }) {
   const [agencyName, setAgencyName] = useState(localStorage.getItem('agency_name') || 'Obsidian Elite Acquisition');
   const [startingPrice, setStartingPrice] = useState(localStorage.getItem('starting_price') || '2500');
   const [frequency, setFrequency] = useState('Balanced');
@@ -24,7 +24,7 @@ export default function Settings({ showToast }) {
       <section className="flex flex-col md:flex-row md:items-end justify-between gap-stack-md">
         <div>
           <h2 className="font-headline-lg text-headline-lg text-on-surface">Settings</h2>
-          <p className="font-body-md text-body-md text-on-surface-variant">Manage your agency preferences and account security.</p>
+          <p className="font-body-md text-body-md text-on-surface-variant">Manage your agency preferences, app install, and account security.</p>
         </div>
         <div className="flex gap-stack-md">
           <button onClick={discard}
@@ -61,6 +61,29 @@ export default function Settings({ showToast }) {
       </div>
 
       <div className="grid grid-cols-1 gap-stack-lg">
+        <div className="glass-card rounded-xl overflow-hidden">
+          <div className="px-stack-lg py-stack-md border-b border-border-subtle bg-surface-container-high">
+            <h4 className="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant opacity-70">App Actions</h4>
+          </div>
+          <div className="p-stack-lg grid grid-cols-1 md:grid-cols-2 gap-stack-md">
+            <button
+              onClick={onInstallApp}
+              disabled={!onInstallApp}
+              className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary text-on-primary px-4 py-3 text-sm font-medium glow-primary hover:bg-primary/90 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+            >
+              <span className="material-symbols-outlined text-[18px]">download</span>
+              Install App
+            </button>
+            <button
+              onClick={onLogout}
+              className="inline-flex items-center justify-center gap-2 rounded-xl border border-error/30 bg-error-container/10 px-4 py-3 text-sm font-medium text-error hover:bg-error-container/20 transition-colors"
+            >
+              <span className="material-symbols-outlined text-[18px]">logout</span>
+              Logout
+            </button>
+          </div>
+        </div>
+
         <div className="glass-card rounded-xl overflow-hidden">
           <div className="px-stack-lg py-stack-md border-b border-border-subtle bg-surface-container-high">
             <h4 className="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant opacity-70">Outreach Settings</h4>
