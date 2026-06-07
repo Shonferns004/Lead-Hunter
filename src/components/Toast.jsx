@@ -14,11 +14,13 @@ export function useToast() {
   }, []);
 
   const ToastContainer = () => (
-    <>
+    <div className="fixed bottom-6 right-6 z-[9999] flex flex-col gap-2">
       {toasts.map(t => (
-        <div key={t.id} className="toast">{t.msg}</div>
+        <div key={t.id} className="bg-secondary text-on-secondary px-4 py-2.5 rounded-lg text-sm font-semibold shadow-lg shadow-secondary/30 animate-in slide-in-from-right">
+          {t.msg}
+        </div>
       ))}
-    </>
+    </div>
   );
 
   return { showToast, ToastContainer };

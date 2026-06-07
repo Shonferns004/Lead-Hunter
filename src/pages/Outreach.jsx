@@ -175,42 +175,52 @@ export default function Outreach({ showToast }) {
   if (mode === 'sending') {
     const sent = leads.filter(l => l.status === 'Contacted').length;
     return (
-      <>
-        <div className="topbar">
+      <div className="space-y-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <div className="page-title">Manual Outreach</div>
-            <div className="page-sub">{leads.length} leads · {sent} sent</div>
+            <h1 className="text-xl md:text-2xl font-bold font-headline-md text-on-surface">Manual Outreach</h1>
+            <p className="text-sm text-on-surface-variant">{leads.length} leads · {sent} sent</p>
           </div>
-          <button className="btn btn-ghost btn-sm" onClick={() => setMode('compose')}>Back</button>
+          <button onClick={() => setMode('compose')}
+            className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium bg-surface-container-high text-on-surface hover:bg-surface-container-highest transition-colors border border-border-subtle">
+            <span className="material-symbols-outlined text-[18px]">arrow_back</span>
+            Back
+          </button>
         </div>
-        <div className="panel">
-          <div className="table-wrap">
-            <table>
+        <div className="glass-card rounded-xl overflow-hidden">
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
               <thead>
-                <tr>
-                  <th>Business</th>
-                  <th>Phone</th>
-                  <th>Personalized Message</th>
-                  <th>Actions</th>
+                <tr className="border-b border-border-subtle bg-surface-container-low">
+                  <th className="text-left px-4 py-3 text-[10px] uppercase tracking-wider text-on-surface-variant font-label-sm">Business</th>
+                  <th className="text-left px-4 py-3 text-[10px] uppercase tracking-wider text-on-surface-variant font-label-sm">Phone</th>
+                  <th className="text-left px-4 py-3 text-[10px] uppercase tracking-wider text-on-surface-variant font-label-sm">Personalized Message</th>
+                  <th className="text-left px-4 py-3 text-[10px] uppercase tracking-wider text-on-surface-variant font-label-sm">Actions</th>
                 </tr>
               </thead>
               <tbody>
-                {leads.map((lead, i) => (
-                  <tr key={lead.id}>
-                    <td>
-                      <div className="biz-name">{lead.name}</div>
-                      <div className="biz-category">{lead.category}</div>
+                {leads.map((lead) => (
+                  <tr key={lead.id} className="border-b border-border-subtle/50 hover:bg-surface-container-low/50 transition-colors">
+                    <td className="px-4 py-3">
+                      <div className="font-medium text-on-surface">{lead.name}</div>
+                      <div className="text-xs text-on-surface-variant">{lead.category}</div>
                     </td>
-                    <td><a className="phone-link" href={`tel:${lead.phone}`}>{lead.phone}</a></td>
-                    <td style={{ fontSize: '12px', maxWidth: '300px', whiteSpace: 'pre-wrap', color: 'var(--muted)' }}>
+                    <td className="px-4 py-3">
+                      <a href={`tel:${lead.phone}`} className="text-secondary hover:text-secondary/80 transition-colors text-sm font-medium">{lead.phone}</a>
+                    </td>
+                    <td className="px-4 py-3 text-xs text-on-surface-variant max-w-xs whitespace-pre-wrap">
                       {personalize(lead).substring(0, 120)}...
                     </td>
-                    <td>
-                      <div className="action-btns" style={{ gap: '4px' }}>
-                        <a className="wa-btn" href={getWhatsAppUrl(lead)} target="_blank" rel="noopener noreferrer" style={{ padding: '5px 10px', fontSize: '11px', textDecoration: 'none', color: 'inherit', display: 'inline-flex', alignItems: 'center', borderRadius: 'var(--radius-sm)' }}>
+                    <td className="px-4 py-3">
+                      <div className="flex items-center gap-1.5">
+                        <a href={getWhatsAppUrl(lead)} target="_blank" rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-medium bg-[#25D366]/20 text-[#25D366] hover:bg-[#25D366]/30 transition-colors">
+                          <span className="material-symbols-outlined text-[14px]">open_in_new</span>
                           Open WA
                         </a>
-                        <button className="btn btn-green btn-sm" onClick={() => markSent(lead)}>
+                        <button onClick={() => markSent(lead)}
+                          className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-medium bg-secondary/20 text-secondary hover:bg-secondary/30 transition-colors">
+                          <span className="material-symbols-outlined text-[14px]">check</span>
                           Sent
                         </button>
                       </div>
@@ -221,112 +231,132 @@ export default function Outreach({ showToast }) {
             </table>
           </div>
         </div>
-      </>
+      </div>
     );
   }
 
   return (
-    <>
-      <div className="topbar">
+    <div className="space-y-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <div className="page-title">WhatsApp Outreach</div>
-          <div className="page-sub">Craft and send personalized cold messages</div>
+          <h1 className="text-xl md:text-2xl font-bold font-headline-md text-on-surface">WhatsApp Outreach</h1>
+          <p className="text-sm text-on-surface-variant">Craft and send personalized cold messages</p>
         </div>
       </div>
 
-      <div className="two-col">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div>
-          <div className="panel">
-            <div className="panel-header">
-              <div className="panel-title">◱ Message Templates</div>
-              <button className="btn btn-ghost btn-sm" onClick={newTemplate}>+ New</button>
+          <div className="glass-card rounded-xl">
+            <div className="flex items-center justify-between px-5 py-4 border-b border-border-subtle">
+              <div className="flex items-center gap-2 text-sm font-semibold font-headline-md text-on-surface">
+                <span className="material-symbols-outlined text-primary text-lg">description</span>
+                Message Templates
+              </div>
+              <button onClick={newTemplate}
+                className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-medium bg-surface-container-high text-on-surface hover:bg-surface-container-highest transition-colors border border-border-subtle">
+                <span className="material-symbols-outlined text-[16px]">add</span>
+                New
+              </button>
             </div>
-            <div className="panel-body" style={{ padding: '8px' }}>
+            <div className="p-2">
               {templates.map((t, i) => (
-                <div
-                  key={i}
-                  onClick={() => selectTemplate(i)}
-                  style={{
-                    padding: '12px 14px', borderRadius: 'var(--radius-sm)', cursor: 'pointer',
-                    borderBottom: '1px solid var(--border)',
-                    background: activeIndex === i ? 'rgba(108,99,255,0.1)' : 'transparent',
-                    display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                  }}
-                >
-                  <div style={{ flex: 1, minWidth: 0 }}>
-                    <div style={{ fontSize: '13.5px', fontWeight: 500 }}>{t.name}</div>
-                    <div style={{ fontSize: '11.5px', color: 'var(--muted)', marginTop: '3px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                      {(t.body || '').substring(0, 60)}...
-                    </div>
+                <div key={i} onClick={() => selectTemplate(i)}
+                  className={`flex items-center justify-between px-3 py-2.5 rounded-lg cursor-pointer transition-colors ${
+                    activeIndex === i ? 'bg-primary-container/20' : 'hover:bg-surface-container-high'
+                  }`}>
+                  <div className="flex-1 min-w-0">
+                    <div className="text-sm font-medium text-on-surface">{t.name}</div>
+                    <div className="text-xs text-on-surface-variant truncate mt-0.5">{(t.body || '').substring(0, 60)}...</div>
                   </div>
-                  <button className="btn btn-red btn-sm" style={{ marginLeft: '8px', flexShrink: 0, padding: '3px 8px', fontSize: '11px' }} onClick={e => { e.stopPropagation(); deleteTemplate(i); }}>✕</button>
+                  <button onClick={e => { e.stopPropagation(); deleteTemplate(i); }}
+                    className="ml-2 text-on-surface-variant hover:text-red-400 transition-colors p-1">
+                    <span className="material-symbols-outlined text-[16px]">delete</span>
+                  </button>
                 </div>
               ))}
             </div>
           </div>
         </div>
+
         <div>
-          <div className="panel">
-            <div className="panel-header">
-              <div className="panel-title">✎ Compose Message</div>
+          <div className="glass-card rounded-xl">
+            <div className="flex items-center justify-between px-5 py-4 border-b border-border-subtle">
+              <div className="flex items-center gap-2 text-sm font-semibold font-headline-md text-on-surface">
+                <span className="material-symbols-outlined text-primary text-lg">edit</span>
+                Compose Message
+              </div>
             </div>
-            <div className="panel-body">
-              <div className="field" style={{ marginBottom: '14px', padding: '12px', background: 'var(--surface2)', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border)' }}>
-                <label style={{ fontWeight: 600 }}>Generate with AI</label>
-                <div style={{ display: 'flex', gap: '8px', marginTop: '6px' }}>
-                  <input type="text" value={aiNiche} onChange={e => setAiNiche(e.target.value)} placeholder="e.g. Restaurants, Salons, Clinics..." style={{ flex: 1, background: 'var(--surface)', border: '1px solid var(--border2)', borderRadius: 'var(--radius-sm)', padding: '8px 14px', color: 'var(--text)', fontFamily: "'DM Sans', sans-serif", fontSize: '13px', outline: 'none' }} />
-                  <button className="btn btn-primary btn-sm" onClick={generateWithAI} disabled={generating} style={{ whiteSpace: 'nowrap' }}>
-                    {generating ? '⏳ Generating...' : ' Generate'}
+            <div className="p-5 space-y-4">
+              <div className="bg-surface-container-high rounded-lg p-3 border border-border-subtle">
+                <label className="text-xs font-semibold text-on-surface flex items-center gap-1.5">
+                  <span className="material-symbols-outlined text-[16px]">auto_awesome</span>
+                  Generate with AI
+                </label>
+                <div className="flex gap-2 mt-2">
+                  <input type="text" value={aiNiche} onChange={e => setAiNiche(e.target.value)} placeholder="e.g. Restaurants, Salons, Clinics..."
+                    className="flex-1 bg-surface-container border border-border-subtle rounded-lg px-3 py-2 text-sm text-on-surface placeholder-on-surface-variant/50 outline-none focus:border-primary transition-colors" />
+                  <button onClick={generateWithAI} disabled={generating}
+                    className="inline-flex items-center gap-1 px-3 py-2 rounded-lg text-sm font-medium bg-primary text-on-primary hover:bg-primary/90 transition-colors glow-primary disabled:opacity-50 whitespace-nowrap">
+                    <span className="material-symbols-outlined text-[16px]">{generating ? 'progress_activity' : 'auto_awesome'}</span>
+                    {generating ? 'Generating...' : 'Generate'}
                   </button>
                 </div>
               </div>
-              <div className="field" style={{ marginBottom: '12px' }}>
-                <label>Template Name</label>
-                <input type="text" value={name} onChange={e => setName(e.target.value)} placeholder="e.g. Restaurant Outreach v1" />
+
+              <div>
+                <label className="text-[11px] uppercase tracking-wider text-on-surface-variant font-label-sm block mb-1.5">Template Name</label>
+                <input type="text" value={name} onChange={e => setName(e.target.value)} placeholder="e.g. Restaurant Outreach v1"
+                  className="w-full bg-surface-container-high border border-border-subtle rounded-lg px-3 py-2.5 text-sm text-on-surface placeholder-on-surface-variant/50 outline-none focus:border-primary transition-colors" />
               </div>
-              <div className="field" style={{ marginBottom: '12px' }}>
-                <label>Message</label>
-                <div className="msg-composer">
-                  <textarea className="msg-text" rows={6} value={body} onChange={e => setBody(e.target.value)} placeholder="Hi {{name}}..." />
-                  <div className="msg-actions">
-                    <div className="msg-vars">
+
+              <div>
+                <label className="text-[11px] uppercase tracking-wider text-on-surface-variant font-label-sm block mb-1.5">Message</label>
+                <div className="bg-surface-container-high border border-border-subtle rounded-lg p-3">
+                  <textarea rows={6} value={body} onChange={e => setBody(e.target.value)} placeholder="Hi {{name}}..."
+                    className="w-full bg-transparent text-sm text-on-surface placeholder-on-surface-variant/50 outline-none resize-none leading-relaxed" />
+                  <div className="flex items-center justify-between pt-3 mt-3 border-t border-border-subtle">
+                    <div className="flex items-center gap-1.5 flex-wrap">
                       {['{{name}}', '{{business}}', '{{category}}', '{{location}}'].map(v => (
-                        <div key={v} className="var-pill" onClick={() => insertVar(v)}>{v}</div>
+                        <button key={v} onClick={() => insertVar(v)}
+                          className="text-[11px] px-2 py-1 rounded-full bg-surface-container border border-border-subtle text-primary hover:bg-primary/20 transition-colors">
+                          {v}
+                        </button>
                       ))}
                     </div>
-                    <button className="btn btn-ghost btn-sm" onClick={saveTemplate}>Save</button>
+                    <button onClick={saveTemplate}
+                      className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-medium bg-surface-container-high text-on-surface hover:bg-surface-container-highest transition-colors border border-border-subtle">
+                      <span className="material-symbols-outlined text-[14px]">save</span>
+                      Save
+                    </button>
                   </div>
                 </div>
               </div>
-              <div className="field" style={{ marginBottom: '14px' }}>
-                <label>Preview</label>
-                <div style={{ background: 'var(--surface2)', borderRadius: 'var(--radius-sm)', padding: '14px', fontSize: '13px', lineHeight: 1.7, border: '1px solid var(--border)', color: 'var(--muted)', minHeight: '80px' }}>
+
+              <div>
+                <label className="text-[11px] uppercase tracking-wider text-on-surface-variant font-label-sm block mb-1.5">Preview</label>
+                <div className="bg-surface-container-high border border-border-subtle rounded-lg p-4 text-sm text-on-surface-variant leading-relaxed min-h-[80px]">
                   {getPreview()}
                 </div>
               </div>
 
-              <div className="field" style={{ marginBottom: '12px' }}>
-                <label>Target Leads</label>
-                <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
-                  <select
-                    style={{ background: 'var(--surface)', border: '1px solid var(--border2)', borderRadius: 'var(--radius-sm)', padding: '8px 12px', color: 'var(--text)', fontFamily: "'DM Sans', sans-serif", fontSize: '13px', outline: 'none' }}
-                    value={targetStatus} onChange={e => setTargetStatus(e.target.value)}
-                  >
-                    {STATUSES.map(s => <option key={s} value={s}>{s}</option>)}
-                  </select>
-                  <span style={{ fontSize: '13px', color: 'var(--muted)' }}>{leadCount} leads</span>
-                </div>
+              <div className="flex items-center gap-3">
+                <label className="text-[11px] uppercase tracking-wider text-on-surface-variant font-label-sm">Target Leads</label>
+                <select value={targetStatus} onChange={e => setTargetStatus(e.target.value)}
+                  className="bg-surface-container-high border border-border-subtle rounded-lg px-3 py-2 text-sm text-on-surface outline-none focus:border-primary transition-colors">
+                  {STATUSES.map(s => <option key={s} value={s}>{s}</option>)}
+                </select>
+                <span className="text-sm text-on-surface-variant">{leadCount} leads</span>
               </div>
 
-              <div style={{ display: 'flex', gap: '10px' }}>
-                <button className="wa-btn" onClick={startOutreach}>
-                  Start Manual Outreach ({leadCount})
-                </button>
-              </div>
+              <button onClick={startOutreach}
+                className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-lg text-sm font-medium bg-[#25D366] text-white hover:bg-[#1db954] transition-colors">
+                <span className="material-symbols-outlined text-[18px]">chat</span>
+                Start Manual Outreach ({leadCount})
+              </button>
             </div>
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }

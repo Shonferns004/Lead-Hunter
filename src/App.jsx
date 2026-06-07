@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
-import Sidebar from './components/Sidebar';
+import Layout from './components/Layout';
 import { useToast } from './components/Toast';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
@@ -60,11 +60,8 @@ export default function App() {
 
   if (auth.loading) {
     return (
-      <div style={{
-        display: 'flex', alignItems: 'center', justifyContent: 'center',
-        minHeight: '100vh', background: '#0d0d0d', color: '#666', fontFamily: "'DM Sans', sans-serif", fontSize: '14px'
-      }}>
-        Loading...
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <span className="material-symbols-outlined text-on-surface-variant animate-spin text-2xl">progress_activity</span>
       </div>
     );
   }
@@ -74,10 +71,9 @@ export default function App() {
   }
 
   return (
-    <div className="layout">
-      <Sidebar leadCount={leadCount} onLogout={handleLogout} />
-      <div className="main">
-        <Routes>
+    <>
+      <Routes>
+        <Route element={<Layout leadCount={leadCount} onLogout={handleLogout} />}>
           <Route path="/" element={<Dashboard showToast={showToast} />} />
           <Route path="/search" element={<LeadSearch showToast={showToast} refreshCounts={refreshCounts} />} />
           <Route path="/leads" element={<AllLeads showToast={showToast} refreshCounts={refreshCounts} />} />
@@ -86,9 +82,9 @@ export default function App() {
           <Route path="/history" element={<History showToast={showToast} refreshCounts={refreshCounts} />} />
           <Route path="/settings" element={<Settings showToast={showToast} />} />
           <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
-      </div>
+        </Route>
+      </Routes>
       <ToastContainer />
-    </div>
+    </>
   );
 }

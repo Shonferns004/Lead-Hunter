@@ -47,69 +47,82 @@ export default function Dashboard({ showToast }) {
     } catch {}
   }
 
+  const activityIcons = { lead_added: 'add_circle', lead_contacted: 'send', lead_deleted: 'delete', lead_restored: 'undo' };
+  const activityBg = { lead_added: 'bg-emerald-600/20 text-emerald-400', lead_contacted: 'bg-blue-600/20 text-blue-400', lead_deleted: 'bg-red-600/20 text-red-400', lead_restored: 'bg-yellow-600/20 text-yellow-400' };
+  const activityLabels = { lead_added: 'added', lead_contacted: 'contacted', lead_deleted: 'deleted', lead_restored: 'restored' };
+
   return (
-    <>
-      <div className="topbar">
+    <div className="space-y-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <div className="page-title">Dashboard</div>
-          <div className="page-sub">Your lead generation overview</div>
+          <h1 className="text-xl md:text-2xl font-bold font-headline-md text-on-surface">Dashboard</h1>
+          <p className="text-sm text-on-surface-variant">Your lead generation overview</p>
         </div>
-        <div className="topbar-actions">
-          <Link to="/search" className="btn btn-ghost btn-sm">⌖ New Search</Link>
-          <Link to="/messages" className="btn btn-primary btn-sm">Send Outreach</Link>
-        </div>
-      </div>
-
-      <div className="stats-grid">
-        <div className="stat-card">
-          <div className="stat-label"><span className="stat-icon">◈</span>Leads Found</div>
-          <div className="stat-value">{stats.total}</div>
-          <div className="stat-change up">{stats.total > 0 ? '↑ Active leads' : 'Run a search to find leads'}</div>
-        </div>
-        <div className="stat-card">
-          <div className="stat-label"><span className="stat-icon">◱</span>Messages Sent</div>
-          <div className="stat-value">{stats.contacted}</div>
-          <div className="stat-change">WhatsApp outreach</div>
+        <div className="flex items-center gap-2">
+          <Link to="/search" className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium bg-surface-container-high text-on-surface hover:bg-surface-container-highest transition-colors border border-border-subtle">
+            <span className="material-symbols-outlined text-[18px]">travel_explore</span>
+            New Search
+          </Link>
+          <Link to="/messages" className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium bg-primary text-on-primary hover:bg-primary/90 transition-colors glow-primary">
+            <span className="material-symbols-outlined text-[18px]">send</span>
+            Send Outreach
+          </Link>
         </div>
       </div>
 
-      <div className="panel">
-        <div className="panel-header">
-          <div className="panel-title">⬡ Recent Activity</div>
-          <Link to="/activity" className="btn btn-ghost btn-sm">View all</Link>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="glass-card rounded-xl p-5">
+          <div className="flex items-center justify-between mb-3">
+            <span className="text-[11px] uppercase tracking-wider text-on-surface-variant font-label-sm">Leads Found</span>
+            <span className="material-symbols-outlined text-on-surface-variant/40 text-2xl">database</span>
+          </div>
+          <div className="text-3xl font-bold font-headline-md text-on-surface">{stats.total}</div>
+          <div className="text-xs text-on-surface-variant mt-1">Total leads in the system</div>
         </div>
-        <div className="panel-body" style={{ padding: '12px 16px' }}>
+        <div className="glass-card rounded-xl p-5">
+          <div className="flex items-center justify-between mb-3">
+            <span className="text-[11px] uppercase tracking-wider text-on-surface-variant font-label-sm">Messages Sent</span>
+            <span className="material-symbols-outlined text-on-surface-variant/40 text-2xl">send</span>
+          </div>
+          <div className="text-3xl font-bold font-headline-md text-on-surface">{stats.contacted}</div>
+          <div className="text-xs text-on-surface-variant mt-1">WhatsApp outreach sent</div>
+        </div>
+      </div>
+
+      <div className="glass-card rounded-xl">
+        <div className="flex items-center justify-between px-5 py-4 border-b border-border-subtle">
+          <div className="flex items-center gap-2 text-sm font-semibold font-headline-md text-on-surface">
+            <span className="material-symbols-outlined text-primary text-lg">history</span>
+            Recent Activity
+          </div>
+          <Link to="/activity" className="text-xs text-primary hover:text-primary/80 transition-colors">View all</Link>
+        </div>
+        <div className="p-4">
           {recentActivity.length === 0 ? (
-            <div className="empty-state" style={{ padding: '20px' }}>
-              <div className="empty-text">No activity yet — start by running a lead search</div>
+            <div className="text-center py-8 text-on-surface-variant">
+              <span className="material-symbols-outlined text-3xl block mb-2">playlist_add</span>
+              <p className="text-sm">No activity yet — start by running a lead search</p>
             </div>
           ) : (
-            <div className="timeline">
-              {recentActivity.map(a => {
-                const icons = { lead_added: '⌖', lead_contacted: '◱', lead_deleted: '✕', lead_restored: '↩' };
-                const colors = { lead_added: '#1a6b3c', lead_contacted: '#1a5a7a', lead_deleted: '#6b2020', lead_restored: '#5a4a1a' };
-                const icon = icons[a.type] || '⬡';
-                const color = colors[a.type] || '#333';
-                return (
-                  <div key={a.id} className="tl-item">
-                    <div className="tl-dot" style={{ background: color, color: '#fff' }}>{icon}</div>
-                    <div className="tl-content">
-                      <div className="tl-text">
-                        <strong>{a.lead_name}</strong>
-                        {a.type === 'lead_added' && ' added'}
-                        {a.type === 'lead_contacted' && ' contacted'}
-                        {a.type === 'lead_deleted' && ' deleted'}
-                        {a.type === 'lead_restored' && ' restored'}
-                      </div>
-                      <div className="tl-time">{new Date(a.created_at).toLocaleDateString()}</div>
-                    </div>
+            <div className="space-y-0">
+              {recentActivity.map(a => (
+                <div key={a.id} className="flex gap-3 py-2.5 border-b border-border-subtle/50 last:border-0">
+                  <div className={`w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 ${activityBg[a.type] || 'bg-surface-container-high text-on-surface-variant'}`}>
+                    <span className="material-symbols-outlined text-sm">{activityIcons[a.type] || 'circle'}</span>
                   </div>
-                );
-              })}
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm text-on-surface">
+                      <span className="font-medium">{a.lead_name}</span>
+                      {' '}{activityLabels[a.type] || a.type}
+                    </p>
+                    <p className="text-xs text-on-surface-variant mt-0.5">{new Date(a.created_at).toLocaleDateString()}</p>
+                  </div>
+                </div>
+              ))}
             </div>
           )}
         </div>
       </div>
-    </>
+    </div>
   );
 }
