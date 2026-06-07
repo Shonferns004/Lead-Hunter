@@ -23,21 +23,6 @@ const bottomNav = [
 export default function Layout({ leadCount, onLogout }) {
   return (
     <div className="min-h-screen bg-background text-on-surface">
-      {/* Mobile top app bar */}
-      <div className="md:hidden fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-4 h-14 bg-surface-container border-b border-border-subtle">
-        <div className="flex items-center gap-2">
-          <span className="material-symbols-outlined text-primary">hexagon</span>
-          <span className="text-lg font-bold font-headline-md tracking-tight">
-            Lead<span className="text-primary">Hunter</span>
-          </span>
-        </div>
-        <div className="flex items-center gap-3">
-          <button onClick={onLogout} className="flex items-center gap-1 text-sm text-on-surface-variant hover:text-on-surface transition-colors">
-            <span className="material-symbols-outlined text-[18px]">logout</span>
-          </button>
-        </div>
-      </div>
-
       {/* Desktop sidebar */}
       <aside className="hidden md:flex flex-col w-[280px] min-h-screen bg-surface-container border-r border-border-subtle flex-shrink-0 fixed left-0 top-0 z-40">
         {/* Logo */}
@@ -116,7 +101,7 @@ export default function Layout({ leadCount, onLogout }) {
       <div className="flex md:ml-[280px] min-h-screen">
         {/* Main content area */}
         <div className="flex-1 min-h-screen min-w-0">
-          <main className="px-3 md:px-8 pt-16 md:pt-8 pb-20 md:pb-8 mx-auto w-full max-w-7xl">
+          <main className="px-3 md:px-8 pt-4 md:pt-8 pb-20 md:pb-8 mx-auto w-full max-w-7xl">
             <Outlet />
           </main>
         </div>
