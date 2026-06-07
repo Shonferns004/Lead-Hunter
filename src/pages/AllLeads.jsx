@@ -7,35 +7,35 @@ const PAGE_SIZE = 10;
 
 function LeadCard({ lead, onContacted, onDelete }) {
   return (
-    <div className="glass-card rounded-xl p-4 flex flex-col gap-3">
-      <div className="flex items-start justify-between gap-2">
+    <div className="glass-card rounded-xl px-3 py-3 md:px-4 md:py-4 flex flex-col gap-2 md:gap-3 w-full">
+      <div className="flex items-start justify-between gap-1.5">
         <div className="min-w-0 flex-1">
           <div className="font-medium text-on-surface text-sm truncate">{lead.name}</div>
           <div className="text-xs text-on-surface-variant truncate mt-0.5">{lead.address}</div>
         </div>
-        <span className="text-[11px] px-2 py-1 rounded bg-surface-container-high text-on-surface-variant whitespace-nowrap shrink-0">{lead.category}</span>
+        <span className="text-[10px] md:text-[11px] px-1.5 py-0.5 md:px-2 md:py-1 rounded bg-surface-container-high text-on-surface-variant whitespace-nowrap shrink-0">{lead.category}</span>
       </div>
       <div className="flex items-center justify-between text-sm">
-        <a href={`tel:${lead.phone}`} className="text-secondary hover:text-secondary/80 transition-colors font-medium">{lead.phone}</a>
-        <span className="text-xs text-on-surface-variant">{lead.created_at ? new Date(lead.created_at).toLocaleDateString() : '-'}</span>
+        <a href={`tel:${lead.phone}`} className="text-xs md:text-sm text-secondary hover:text-secondary/80 transition-colors font-medium truncate min-w-0">{lead.phone}</a>
+        <span className="text-[10px] md:text-xs text-on-surface-variant shrink-0 ml-2">{lead.created_at ? new Date(lead.created_at).toLocaleDateString() : '-'}</span>
       </div>
-      <div className="flex items-center gap-2 pt-1 mt-auto">
+      <div className="flex items-center gap-1.5 md:gap-2 pt-0.5">
         <a
           href={`https://wa.me/${lead.phone.replace(/\s+/g, '')}`}
           target="_blank" rel="noopener noreferrer"
-          className="flex-1 inline-flex items-center justify-center gap-1 px-3 py-2 rounded-lg text-xs font-medium bg-[#25D366]/20 text-[#25D366] hover:bg-[#25D366]/30 transition-colors"
+          className="flex-1 inline-flex items-center justify-center gap-1 px-2 py-1.5 md:px-3 md:py-2 rounded-lg text-[11px] md:text-xs font-medium bg-[#25D366]/20 text-[#25D366] hover:bg-[#25D366]/30 transition-colors"
         >
-          <span className="material-symbols-outlined text-[16px]">chat</span>
-          WA
+          <span className="material-symbols-outlined text-[14px] md:text-[16px]">chat</span>
+          <span className="hidden sm:inline">WA</span>
         </a>
         <button onClick={onContacted}
-          className="flex-1 inline-flex items-center justify-center gap-1 px-3 py-2 rounded-lg text-xs font-medium bg-primary/20 text-primary hover:bg-primary/30 transition-colors">
-          <span className="material-symbols-outlined text-[16px]">check</span>
-          Contacted
+          className="flex-1 inline-flex items-center justify-center gap-1 px-2 py-1.5 md:px-3 md:py-2 rounded-lg text-[11px] md:text-xs font-medium bg-primary/20 text-primary hover:bg-primary/30 transition-colors">
+          <span className="material-symbols-outlined text-[14px] md:text-[16px]">check</span>
+          <span className="hidden sm:inline">Done</span>
         </button>
         <button onClick={onDelete}
-          className="inline-flex items-center justify-center px-3 py-2 rounded-lg text-xs font-medium bg-red-500/20 text-red-400 hover:bg-red-500/30 transition-colors">
-          <span className="material-symbols-outlined text-[16px]">delete</span>
+          className="inline-flex items-center justify-center px-2 py-1.5 md:px-3 md:py-2 rounded-lg text-[11px] md:text-xs font-medium bg-red-500/20 text-red-400 hover:bg-red-500/30 transition-colors">
+          <span className="material-symbols-outlined text-[14px] md:text-[16px]">delete</span>
         </button>
       </div>
     </div>
@@ -80,7 +80,6 @@ export default function AllLeads({ showToast, refreshCounts }) {
   useEffect(() => { loadLeads(); }, [search]);
 
   const totalPages = Math.max(1, Math.ceil(leads.length / PAGE_SIZE));
-  const paginatedLeads = useMemo(() => leads.slice(0, PAGE_SIZE), [leads]);
   const displayLeads = useMemo(() => leads.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE), [leads, page]);
 
   useEffect(() => {
@@ -122,8 +121,8 @@ export default function AllLeads({ showToast, refreshCounts }) {
   }
 
   return (
-    <div className="space-y-4 md:space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <div className="space-y-4 md:space-y-6 w-full min-w-0">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
           <h1 className="text-xl md:text-2xl font-bold font-headline-md text-on-surface">All Leads</h1>
           <p className="text-sm text-on-surface-variant">New leads ready for outreach</p>
@@ -141,7 +140,7 @@ export default function AllLeads({ showToast, refreshCounts }) {
       </div>
 
       <div className="flex items-center gap-3">
-        <div className="relative w-full max-w-xs">
+        <div className="relative flex-1 min-w-0">
           <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[18px]">search</span>
           <input
             type="text" placeholder="Search leads..."
@@ -149,7 +148,7 @@ export default function AllLeads({ showToast, refreshCounts }) {
             className="w-full bg-surface-container-high border border-border-subtle rounded-lg pl-9 pr-3 py-2.5 text-sm text-on-surface placeholder-on-surface-variant/50 outline-none focus:border-primary transition-colors"
           />
         </div>
-        <span className="text-xs text-on-surface-variant hidden sm:inline">{leads.length} leads</span>
+        <span className="text-xs text-on-surface-variant hidden sm:inline shrink-0">{leads.length} leads</span>
       </div>
 
       {loading ? (
@@ -163,13 +162,6 @@ export default function AllLeads({ showToast, refreshCounts }) {
         </div>
       ) : (
         <>
-          {/* Desktop: all cards */}
-          <div className="hidden sm:grid grid-cols-2 lg:grid-cols-3 gap-4">
-            {leads.map(b => (
-              <LeadCard key={b.id} lead={b} onContacted={() => markContacted(b, leadIndex(b))} onDelete={() => deleteLead(b, leadIndex(b))} />
-            ))}
-          </div>
-
           {/* Mobile: paginated cards */}
           <div className="sm:hidden space-y-3">
             {displayLeads.map(b => (
@@ -178,24 +170,33 @@ export default function AllLeads({ showToast, refreshCounts }) {
           </div>
 
           {/* Mobile pagination */}
-          <div className="sm:hidden flex items-center justify-center gap-4 pt-2">
-            <button
-              onClick={() => setPage(p => Math.max(0, p - 1))}
-              disabled={page === 0}
-              className="inline-flex items-center gap-1 px-4 py-2 rounded-lg text-sm font-medium bg-surface-container-high text-on-surface hover:bg-surface-container-highest transition-colors border border-border-subtle disabled:opacity-40"
-            >
-              <span className="material-symbols-outlined text-[18px]">chevron_left</span>
-              Prev
-            </button>
-            <span className="text-sm text-on-surface-variant">{page + 1} / {totalPages}</span>
-            <button
-              onClick={() => setPage(p => Math.min(totalPages - 1, p + 1))}
-              disabled={page >= totalPages - 1}
-              className="inline-flex items-center gap-1 px-4 py-2 rounded-lg text-sm font-medium bg-surface-container-high text-on-surface hover:bg-surface-container-highest transition-colors border border-border-subtle disabled:opacity-40"
-            >
-              Next
-              <span className="material-symbols-outlined text-[18px]">chevron_right</span>
-            </button>
+          {leads.length > PAGE_SIZE && (
+            <div className="sm:hidden flex items-center justify-center gap-4 pt-1">
+              <button
+                onClick={() => setPage(p => Math.max(0, p - 1))}
+                disabled={page === 0}
+                className="inline-flex items-center gap-1 px-4 py-2 rounded-lg text-sm font-medium bg-surface-container-high text-on-surface hover:bg-surface-container-highest transition-colors border border-border-subtle disabled:opacity-40"
+              >
+                <span className="material-symbols-outlined text-[18px]">chevron_left</span>
+                Prev
+              </button>
+              <span className="text-sm text-on-surface-variant">{page + 1} / {totalPages}</span>
+              <button
+                onClick={() => setPage(p => Math.min(totalPages - 1, p + 1))}
+                disabled={page >= totalPages - 1}
+                className="inline-flex items-center gap-1 px-4 py-2 rounded-lg text-sm font-medium bg-surface-container-high text-on-surface hover:bg-surface-container-highest transition-colors border border-border-subtle disabled:opacity-40"
+              >
+                Next
+                <span className="material-symbols-outlined text-[18px]">chevron_right</span>
+              </button>
+            </div>
+          )}
+
+          {/* Desktop: all cards */}
+          <div className="hidden sm:grid grid-cols-2 lg:grid-cols-3 gap-4">
+            {leads.map(b => (
+              <LeadCard key={b.id} lead={b} onContacted={() => markContacted(b, leadIndex(b))} onDelete={() => deleteLead(b, leadIndex(b))} />
+            ))}
           </div>
         </>
       )}
