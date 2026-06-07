@@ -192,8 +192,8 @@ export default function AllLeads({ showToast, refreshCounts }) {
             </div>
           )}
 
-          {/* Desktop: all cards */}
-          <div className="hidden sm:grid grid-cols-2 lg:grid-cols-3 gap-4">
+          {/* Desktop: all cards in single column */}
+          <div className="hidden sm:flex sm:flex-col gap-3">
             {leads.map(b => (
               <LeadCard key={b.id} lead={b} onContacted={() => markContacted(b, leadIndex(b))} onDelete={() => deleteLead(b, leadIndex(b))} />
             ))}
