@@ -187,6 +187,7 @@ export default function LeadSearch({ showToast, refreshCounts }) {
                   <th>Category</th>
                   <th>Phone</th>
                   <th>Rating</th>
+                  <th>Image</th>
                   <th>Actions</th>
                 </tr>
               </thead>
@@ -201,6 +202,13 @@ export default function LeadSearch({ showToast, refreshCounts }) {
                     <td><span className="tag">{b.category}</span></td>
                     <td><a className="phone-link" href={`tel:${b.phone}`}>{b.phone}</a></td>
                     <td><span className="rating">★</span> {b.rating}</td>
+                    <td>
+                      {b.photoUrl ? (
+                        <img src={b.photoUrl} alt={b.name} style={{ width: '48px', height: '48px', borderRadius: '6px', objectFit: 'cover' }} />
+                      ) : (
+                        <div style={{ width: '48px', height: '48px', borderRadius: '6px', background: 'var(--surface2)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '16px', color: 'var(--muted)' }}>◌</div>
+                      )}
+                    </td>
                     <td>
                       <div className="action-btns">
                         <a className="wa-btn" href={`https://wa.me/${results[i].phone.replace(/\s+/g, '')}`} target="_blank" rel="noopener noreferrer" style={{ padding: '5px 10px', fontSize: '11px', textDecoration: 'none', color: 'inherit', display: 'inline-flex', alignItems: 'center', borderRadius: 'var(--radius-sm)' }}>WA</a>
