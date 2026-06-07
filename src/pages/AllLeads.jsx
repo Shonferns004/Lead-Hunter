@@ -145,11 +145,17 @@ export default function AllLeads({ showToast, refreshCounts }) {
             {Array.from({ length: 4 }).map((_, i) => <SkeletonCard key={i} />)}
           </div>
           <div className="hidden md:block overflow-x-auto rounded-xl border border-outline-variant">
-            <table className="w-full text-left border-collapse">
+            <table className="w-full min-w-[980px] table-fixed text-left border-collapse">
               <thead className="bg-surface-container border-b border-outline-variant">
                 <tr>
-                  {['Business Name', 'Category', 'Phone', 'Created', 'Actions'].map(h => (
-                    <th key={h} className="px-6 py-4 font-label-sm text-label-sm text-on-surface-variant uppercase opacity-70 tracking-wider">{h}</th>
+                  {[
+                    ['Business Name', 'w-[44%]'],
+                    ['Category', 'w-[16%]'],
+                    ['Phone', 'w-[16%]'],
+                    ['Created', 'w-[12%]'],
+                    ['Actions', 'w-[12%] text-right'],
+                  ].map(([h, width]) => (
+                    <th key={h} className={`${width} px-6 py-4 font-label-sm text-label-sm text-on-surface-variant uppercase opacity-70 tracking-wider`}>{h}</th>
                   ))}
                 </tr>
               </thead>
@@ -191,14 +197,14 @@ export default function AllLeads({ showToast, refreshCounts }) {
 
           {/* Desktop: table */}
           <div className="hidden md:block overflow-x-auto rounded-xl border border-outline-variant">
-            <table className="w-full text-left border-collapse">
+            <table className="w-full min-w-[980px] table-fixed text-left border-collapse">
               <thead className="bg-surface-container border-b border-outline-variant">
                 <tr>
-                  <th className="px-6 py-4 font-label-sm text-label-sm text-on-surface-variant uppercase opacity-70 tracking-wider">Business Name</th>
-                  <th className="px-6 py-4 font-label-sm text-label-sm text-on-surface-variant uppercase opacity-70 tracking-wider">Category</th>
-                  <th className="px-6 py-4 font-label-sm text-label-sm text-on-surface-variant uppercase opacity-70 tracking-wider">Phone</th>
-                  <th className="px-6 py-4 font-label-sm text-label-sm text-on-surface-variant uppercase opacity-70 tracking-wider">Created</th>
-                  <th className="px-6 py-4 font-label-sm text-label-sm text-on-surface-variant uppercase opacity-70 tracking-wider text-right">Actions</th>
+                  <th className="w-[44%] px-6 py-4 font-label-sm text-label-sm text-on-surface-variant uppercase opacity-70 tracking-wider">Business Name</th>
+                  <th className="w-[16%] px-6 py-4 font-label-sm text-label-sm text-on-surface-variant uppercase opacity-70 tracking-wider">Category</th>
+                  <th className="w-[16%] px-6 py-4 font-label-sm text-label-sm text-on-surface-variant uppercase opacity-70 tracking-wider">Phone</th>
+                  <th className="w-[12%] px-6 py-4 font-label-sm text-label-sm text-on-surface-variant uppercase opacity-70 tracking-wider">Created</th>
+                  <th className="w-[12%] px-6 py-4 font-label-sm text-label-sm text-on-surface-variant uppercase opacity-70 tracking-wider text-right">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-outline-variant">
@@ -206,37 +212,39 @@ export default function AllLeads({ showToast, refreshCounts }) {
                   const idx = leadIndex(b);
                   return (
                     <tr key={b.id} className="hover:bg-surface-variant/30 transition-colors group">
-                      <td className="px-6 py-4">
-                        <div className="flex items-center gap-3">
+                      <td className="px-6 py-4 align-middle">
+                        <div className="flex items-center gap-3 min-w-0">
                           <div className="w-10 h-10 rounded-lg bg-surface-variant flex items-center justify-center text-on-surface-variant">
                             <span className="material-symbols-outlined">store</span>
                           </div>
-                          <div>
-                            <p className="font-label-md text-label-md text-on-surface group-hover:text-primary transition-colors">{b.name}</p>
-                            <p className="text-[12px] text-on-surface-variant">{b.address}</p>
+                          <div className="min-w-0">
+                            <p className="truncate font-label-md text-label-md text-on-surface group-hover:text-primary transition-colors">{b.name}</p>
+                            <p className="truncate text-[12px] text-on-surface-variant">{b.address}</p>
                           </div>
                         </div>
                       </td>
-                      <td className="px-6 py-4">
-                        <span className="px-3 py-1 rounded-full bg-surface-variant text-on-surface text-[12px] font-medium border border-outline-variant">{b.category}</span>
+                      <td className="px-6 py-4 align-middle">
+                        <span className="inline-flex max-w-full items-center overflow-hidden rounded-full border border-outline-variant bg-surface-variant px-3 py-1 text-[12px] font-medium text-on-surface whitespace-nowrap">
+                          <span className="block truncate">{b.category}</span>
+                        </span>
                       </td>
-                      <td className="px-6 py-4">
-                        <a href={`tel:${b.phone}`} className="font-mono text-secondary font-medium">{b.phone}</a>
+                      <td className="px-6 py-4 align-middle">
+                        <a href={`tel:${b.phone}`} className="block truncate font-mono text-secondary font-medium whitespace-nowrap">{b.phone}</a>
                       </td>
-                      <td className="px-6 py-4 font-body-md text-body-md text-on-surface-variant">{b.created_at ? new Date(b.created_at).toLocaleDateString() : '-'}</td>
-                      <td className="px-6 py-4">
+                      <td className="px-6 py-4 align-middle font-body-md text-body-md text-on-surface-variant whitespace-nowrap">{b.created_at ? new Date(b.created_at).toLocaleDateString() : '-'}</td>
+                      <td className="px-6 py-4 align-middle whitespace-nowrap">
                         <div className="flex justify-end gap-2">
                           <a href={`https://wa.me/${b.phone.replace(/\s+/g, '')}`} target="_blank" rel="noopener noreferrer"
-                            className="p-2 rounded-lg text-secondary hover:bg-secondary/10 transition-colors" title="WhatsApp">
-                            <span className="material-symbols-outlined">chat</span>
+                            className="flex h-10 w-10 items-center justify-center rounded-lg text-secondary hover:bg-secondary/10 transition-colors" title="WhatsApp">
+                            <span className="material-symbols-outlined text-[20px]">chat</span>
                           </a>
                           <button onClick={() => markContacted(b, idx)}
-                            className="p-2 rounded-lg text-primary hover:bg-primary/10 transition-colors" title="Mark Contacted">
-                            <span className="material-symbols-outlined">check</span>
+                            className="flex h-10 w-10 items-center justify-center rounded-lg text-primary hover:bg-primary/10 transition-colors" title="Mark Contacted">
+                            <span className="material-symbols-outlined text-[20px]">check</span>
                           </button>
                           <button onClick={() => deleteLead(b, idx)}
-                            className="p-2 rounded-lg text-error hover:bg-error/10 transition-colors" title="Delete">
-                            <span className="material-symbols-outlined">delete</span>
+                            className="flex h-10 w-10 items-center justify-center rounded-lg text-error hover:bg-error/10 transition-colors" title="Delete">
+                            <span className="material-symbols-outlined text-[20px]">delete</span>
                           </button>
                         </div>
                       </td>
