@@ -144,16 +144,16 @@ export default function AllLeads({ showToast, refreshCounts }) {
           <div className="md:hidden space-y-2.5">
             {Array.from({ length: 4 }).map((_, i) => <SkeletonCard key={i} />)}
           </div>
-          <div className="hidden md:block overflow-x-auto rounded-xl border border-[#374151]">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="bg-[#272a31] border-b border-[#374151]">
-                  {['Business', 'Category', 'Phone', 'Created', 'Actions'].map(h => (
-                    <th key={h} className="text-left px-4 py-3 text-[10px] uppercase tracking-wider text-[#ccc3d8] font-medium">{h}</th>
+          <div className="hidden md:block overflow-x-auto rounded-xl border border-outline-variant">
+            <table className="w-full text-left border-collapse">
+              <thead className="bg-surface-container border-b border-outline-variant">
+                <tr>
+                  {['Business Name', 'Category', 'Phone', 'Created', 'Actions'].map(h => (
+                    <th key={h} className="px-6 py-4 font-label-sm text-label-sm text-on-surface-variant uppercase opacity-70 tracking-wider">{h}</th>
                   ))}
                 </tr>
               </thead>
-              <tbody>
+              <tbody className="divide-y divide-outline-variant">
                 {Array.from({ length: 6 }).map((_, i) => <SkeletonTableRow key={i} cols={5} />)}
               </tbody>
             </table>
@@ -190,48 +190,53 @@ export default function AllLeads({ showToast, refreshCounts }) {
           )}
 
           {/* Desktop: table */}
-          <div className="hidden md:block overflow-x-auto rounded-xl border border-[#374151]">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="bg-[#272a31] border-b border-[#374151]">
-                  <th className="text-left px-4 py-3 text-[10px] uppercase tracking-wider text-[#ccc3d8] font-medium">Business</th>
-                  <th className="text-left px-4 py-3 text-[10px] uppercase tracking-wider text-[#ccc3d8] font-medium">Category</th>
-                  <th className="text-left px-4 py-3 text-[10px] uppercase tracking-wider text-[#ccc3d8] font-medium">Phone</th>
-                  <th className="text-left px-4 py-3 text-[10px] uppercase tracking-wider text-[#ccc3d8] font-medium">Created</th>
-                  <th className="text-left px-4 py-3 text-[10px] uppercase tracking-wider text-[#ccc3d8] font-medium">Actions</th>
+          <div className="hidden md:block overflow-x-auto rounded-xl border border-outline-variant">
+            <table className="w-full text-left border-collapse">
+              <thead className="bg-surface-container border-b border-outline-variant">
+                <tr>
+                  <th className="px-6 py-4 font-label-sm text-label-sm text-on-surface-variant uppercase opacity-70 tracking-wider">Business Name</th>
+                  <th className="px-6 py-4 font-label-sm text-label-sm text-on-surface-variant uppercase opacity-70 tracking-wider">Category</th>
+                  <th className="px-6 py-4 font-label-sm text-label-sm text-on-surface-variant uppercase opacity-70 tracking-wider">Phone</th>
+                  <th className="px-6 py-4 font-label-sm text-label-sm text-on-surface-variant uppercase opacity-70 tracking-wider">Created</th>
+                  <th className="px-6 py-4 font-label-sm text-label-sm text-on-surface-variant uppercase opacity-70 tracking-wider text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody className="divide-y divide-outline-variant">
                 {leads.map(b => {
                   const idx = leadIndex(b);
                   return (
-                    <tr key={b.id} className="border-b border-[#374151]/50 hover:bg-[#272a31]/50">
-                      <td className="px-4 py-3">
-                        <div className="font-medium text-[#e1e2eb]">{b.name}</div>
-                        <div className="text-xs text-[#ccc3d8]">{b.address}</div>
+                    <tr key={b.id} className="hover:bg-surface-variant/30 transition-colors group">
+                      <td className="px-6 py-4">
+                        <div className="flex items-center gap-3">
+                          <div className="w-10 h-10 rounded-lg bg-surface-variant flex items-center justify-center text-on-surface-variant">
+                            <span className="material-symbols-outlined">store</span>
+                          </div>
+                          <div>
+                            <p className="font-label-md text-label-md text-on-surface group-hover:text-primary transition-colors">{b.name}</p>
+                            <p className="text-[12px] text-on-surface-variant">{b.address}</p>
+                          </div>
+                        </div>
                       </td>
-                      <td className="px-4 py-3">
-                        <span className="text-xs px-3 py-1 rounded-full bg-surface-variant text-on-surface border border-outline-variant">{b.category}</span>
+                      <td className="px-6 py-4">
+                        <span className="px-3 py-1 rounded-full bg-surface-variant text-on-surface text-[12px] font-medium border border-outline-variant">{b.category}</span>
                       </td>
-                      <td className="px-4 py-3">
-                        <a href={`tel:${b.phone}`} className="text-[#4edea3] font-medium">{b.phone}</a>
+                      <td className="px-6 py-4">
+                        <a href={`tel:${b.phone}`} className="font-mono text-secondary font-medium">{b.phone}</a>
                       </td>
-                      <td className="px-4 py-3 text-xs text-[#ccc3d8]">{b.created_at ? new Date(b.created_at).toLocaleDateString() : '-'}</td>
-                      <td className="px-4 py-3">
-                        <div className="flex items-center gap-1.5">
+                      <td className="px-6 py-4 font-body-md text-body-md text-on-surface-variant">{b.created_at ? new Date(b.created_at).toLocaleDateString() : '-'}</td>
+                      <td className="px-6 py-4">
+                        <div className="flex justify-end gap-2">
                           <a href={`https://wa.me/${b.phone.replace(/\s+/g, '')}`} target="_blank" rel="noopener noreferrer"
-                            className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-medium bg-[#25D366]/20 text-[#25D366]">
-                            <span className="material-symbols-outlined text-[14px]">chat</span>
-                            WA
+                            className="p-2 rounded-lg text-secondary hover:bg-secondary/10 transition-colors" title="WhatsApp">
+                            <span className="material-symbols-outlined">chat</span>
                           </a>
                           <button onClick={() => markContacted(b, idx)}
-                            className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-medium bg-[#7c3aed]/20 text-[#d2bbff]">
-                            <span className="material-symbols-outlined text-[14px]">check</span>
-                            Done
+                            className="p-2 rounded-lg text-primary hover:bg-primary/10 transition-colors" title="Mark Contacted">
+                            <span className="material-symbols-outlined">check</span>
                           </button>
                           <button onClick={() => deleteLead(b, idx)}
-                            className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-medium bg-red-500/20 text-red-400">
-                            <span className="material-symbols-outlined text-[14px]">delete</span>
+                            className="p-2 rounded-lg text-error hover:bg-error/10 transition-colors" title="Delete">
+                            <span className="material-symbols-outlined">delete</span>
                           </button>
                         </div>
                       </td>
