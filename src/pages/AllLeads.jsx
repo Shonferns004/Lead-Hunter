@@ -149,14 +149,15 @@ export default function AllLeads({ showToast, refreshCounts }) {
         </div>
       ) : (
         <>
-          <div className="space-y-2.5">
+          {/* Mobile: paginated single column */}
+          <div className="md:hidden space-y-2.5">
             {displayLeads.map(b => (
               <LeadCard key={b.id} lead={b} onContacted={() => markContacted(b, leadIndex(b))} onDelete={() => deleteLead(b, leadIndex(b))} />
             ))}
           </div>
 
           {leads.length > PAGE_SIZE && (
-            <div className="flex items-center justify-center gap-3 pt-2">
+            <div className="md:hidden flex items-center justify-center gap-3 pt-2">
               <button onClick={() => setPage(p => Math.max(0, p - 1))} disabled={page === 0}
                 className="flex items-center gap-0.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-[#272a31] text-[#ccc3d8] border border-[#374151] disabled:opacity-40">
                 <span className="material-symbols-outlined text-[14px]">chevron_left</span>
@@ -170,6 +171,13 @@ export default function AllLeads({ showToast, refreshCounts }) {
               </button>
             </div>
           )}
+
+          {/* Desktop: 3 columns, all cards */}
+          <div className="hidden md:grid md:grid-cols-3 gap-3">
+            {leads.map(b => (
+              <LeadCard key={b.id} lead={b} onContacted={() => markContacted(b, leadIndex(b))} onDelete={() => deleteLead(b, leadIndex(b))} />
+            ))}
+          </div>
         </>
       )}
     </div>
