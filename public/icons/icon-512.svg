@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="LeadHunter CRM">
+  <defs>
+    <linearGradient id="g" x1="64" y1="64" x2="448" y2="448" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#7c3aed"/>
+      <stop offset="1" stop-color="#25d366"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="#10131a"/>
+  <rect x="64" y="64" width="384" height="384" rx="92" fill="url(#g)"/>
+  <path d="M156 186h200v32H156zM156 244h200v32H156zM156 302h130v32H156z" fill="#10131a" opacity=".95"/>
+  <rect x="124" y="156" width="34" height="200" rx="10" fill="#10131a" opacity=".95"/>
+  <circle cx="376" cy="334" r="28" fill="#10131a" opacity=".95"/>
+</svg>
