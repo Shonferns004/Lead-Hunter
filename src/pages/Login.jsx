@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { apiFetch } from '../lib/constants';
+import { apiFetch, setAuthToken } from '../lib/constants';
 
 export default function Login({ onLoginSuccess }) {
   const [username, setUsername] = useState('');
@@ -12,10 +12,11 @@ export default function Login({ onLoginSuccess }) {
     setError('');
     setLoading(true);
     try {
-      await apiFetch('/api/login', {
+      const data = await apiFetch('/api/login', {
         method: 'POST',
         body: JSON.stringify({ username, password }),
       });
+      setAuthToken(data.token);
       onLoginSuccess();
     } catch (err) {
       setError(err.message || 'Login failed');

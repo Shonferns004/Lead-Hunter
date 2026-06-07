@@ -11,7 +11,7 @@ import Activity from './pages/Activity';
 import History from './pages/History';
 import Settings from './pages/Settings';
 import { supabase } from './lib/supabase';
-import { apiFetch } from './lib/constants';
+import { apiFetch, setAuthToken } from './lib/constants';
 
 export default function App() {
   const [auth, setAuth] = useState({ loading: true, authenticated: false });
@@ -52,9 +52,10 @@ export default function App() {
   async function handleLogout() {
     try {
       await apiFetch('/api/logout', { method: 'POST' });
-      setAuth({ authenticated: false });
-      navigate('/');
     } catch {}
+    setAuthToken(null);
+    setAuth({ authenticated: false });
+    navigate('/');
   }
 
   if (auth.loading) {
