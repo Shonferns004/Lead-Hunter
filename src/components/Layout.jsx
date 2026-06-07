@@ -20,7 +20,7 @@ const bottomNav = [
   { path: '/history', label: 'History', icon: 'history' },
 ];
 
-export default function Layout({ leadCount, onLogout }) {
+export default function Layout({ leadCount, onLogout, onInstallApp }) {
   return (
     <div className="min-h-screen bg-background text-on-surface">
       {/* Desktop sidebar */}
@@ -35,6 +35,18 @@ export default function Layout({ leadCount, onLogout }) {
             <div className="text-[10px] text-on-surface-variant uppercase tracking-[1.5px] font-label-sm">Web Agency CRM</div>
           </div>
         </div>
+
+        {onInstallApp && (
+          <div className="px-4 pt-4">
+            <button
+              onClick={onInstallApp}
+              className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-primary text-on-primary px-3 py-2.5 text-sm font-medium glow-primary hover:bg-primary/90 transition-colors"
+            >
+              <span className="material-symbols-outlined text-[18px]">download</span>
+              Install App
+            </button>
+          </div>
+        )}
 
         {/* Navigation */}
         <nav className="flex-1 px-3 py-4 overflow-y-auto">
@@ -101,6 +113,17 @@ export default function Layout({ leadCount, onLogout }) {
       <div className="flex md:ml-[280px] min-h-screen">
         {/* Main content area */}
         <div className="flex-1 min-h-screen min-w-0">
+          {onInstallApp && (
+            <div className="md:hidden px-3 pt-3">
+              <button
+                onClick={onInstallApp}
+                className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-primary text-on-primary px-4 py-3 text-sm font-medium glow-primary"
+              >
+                <span className="material-symbols-outlined text-[18px]">download</span>
+                Install App
+              </button>
+            </div>
+          )}
           <main className="px-3 md:px-8 pt-4 md:pt-8 pb-20 md:pb-8 mx-auto w-full max-w-7xl">
             <Outlet />
           </main>

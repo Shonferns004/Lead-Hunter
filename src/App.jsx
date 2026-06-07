@@ -14,6 +14,7 @@ import { apiFetch, setAuthToken } from './lib/constants';
 export default function App() {
   const [auth, setAuth] = useState({ loading: true, authenticated: false });
   const [leadCount, setLeadCount] = useState(0);
+  const [installPrompt, setInstallPrompt] = useState(null);
   const { showToast, ToastContainer } = useToast();
   const navigate = useNavigate();
 
@@ -31,6 +32,26 @@ export default function App() {
   }, []);
 
   useEffect(() => { if (auth.authenticated) refreshCounts(); }, [auth.authenticated, refreshCounts]);
+
+  useEffect(() => {
+    const handleBeforeInstallPrompt = (event) => {
+      event.preventDefault();
+      setInstallPrompt(event);
+    };
+
+    const handleAppInstalled = () => {
+      setInstallPrompt(null);
+      showToast('App installed');
+    };
+
+    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+    window.addEventListener('appinstalled', handleAppInstalled);
+
+    return () => {
+      window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+      window.removeEventListener('appinstalled', handleAppInstalled);
+    };
+  }, [showToast]);
 
   useEffect(() => {
     if (!auth.authenticated) return;
@@ -56,6 +77,15 @@ export default function App() {
     navigate('/');
   }
 
+  async function handleInstallApp() {
+    if (!installPrompt) return;
+
+    const prompt = installPrompt;
+    setInstallPrompt(null);
+    prompt.prompt();
+    await prompt.userChoice.catch(() => null);
+  }
+
   if (auth.loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
@@ -71,7 +101,13 @@ export default function App() {
   return (
     <>
       <Routes>
-        <Route element={<Layout leadCount={leadCount} onLogout={handleLogout} />}>
+        <Route element={
+          <Layout
+            leadCount={leadCount}
+            onLogout={handleLogout}
+            onInstallApp={installPrompt ? handleInstallApp : null}
+          />
+        }>
           <Route path="/" element={<Dashboard showToast={showToast} />} />
           <Route path="/search" element={<LeadSearch showToast={showToast} refreshCounts={refreshCounts} />} />
           <Route path="/leads" element={<AllLeads showToast={showToast} refreshCounts={refreshCounts} />} />
