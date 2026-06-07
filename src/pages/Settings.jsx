@@ -68,8 +68,7 @@ export default function Settings({ showToast, onLogout, onInstallApp }) {
           <div className="p-stack-lg grid grid-cols-1 md:grid-cols-2 gap-stack-md">
             <button
               onClick={onInstallApp}
-              disabled={!onInstallApp}
-              className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary text-on-primary px-4 py-3 text-sm font-medium glow-primary hover:bg-primary/90 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+              className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary text-on-primary px-4 py-3 text-sm font-medium glow-primary hover:bg-primary/90 transition-colors"
             >
               <span className="material-symbols-outlined text-[18px]">download</span>
               Install App

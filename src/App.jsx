@@ -79,12 +79,18 @@ export default function App() {
   }
 
   async function handleInstallApp() {
-    if (!installPrompt) return;
+    if (!installPrompt) {
+      showToast('Install is not available right now. Use the browser menu to install this app.');
+      return;
+    }
 
     const prompt = installPrompt;
     setInstallPrompt(null);
     prompt.prompt();
-    await prompt.userChoice.catch(() => null);
+    const choice = await prompt.userChoice.catch(() => null);
+    if (choice?.outcome === 'accepted') {
+      showToast('Install started');
+    }
   }
 
   if (auth.loading) {
@@ -119,7 +125,7 @@ export default function App() {
               <Settings
                 showToast={showToast}
                 onLogout={handleLogout}
-                onInstallApp={installPrompt ? handleInstallApp : null}
+                onInstallApp={handleInstallApp}
               />
             }
           />
