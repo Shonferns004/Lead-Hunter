@@ -131,8 +131,8 @@ export default function Layout({ leadCount, onLogout }) {
 
       <div className="flex md:ml-[280px] min-h-screen">
         {/* Main content area */}
-        <div className="flex-1 min-h-screen">
-          <main className="p-4 md:p-8 pt-20 md:pt-8 pb-24 md:pb-8 max-w-7xl mx-auto w-full">
+        <div className="flex-1 min-h-screen min-w-0">
+          <main className="px-3 md:px-8 pt-16 md:pt-8 pb-20 md:pb-8 mx-auto w-full max-w-7xl">
             <Outlet />
           </main>
         </div>

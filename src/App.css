@@ -65,8 +65,7 @@
 }
 
 .glass-card {
-  background: rgba(17, 24, 39, 0.7);
-  backdrop-filter: blur(12px);
+  background: #1d2026;
   border: 1px solid rgba(149, 141, 161, 0.1);
 }
 
