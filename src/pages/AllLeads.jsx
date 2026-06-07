@@ -70,7 +70,7 @@ export default function AllLeads({ showToast, refreshCounts }) {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 md:space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-xl md:text-2xl font-bold font-headline-md text-on-surface">All Leads</h1>
@@ -89,7 +89,7 @@ export default function AllLeads({ showToast, refreshCounts }) {
       </div>
 
       <div className="flex items-center gap-3">
-        <div className="relative flex-1 max-w-xs">
+        <div className="relative w-full max-w-xs">
           <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[18px]">search</span>
           <input
             type="text" placeholder="Search leads..."
@@ -99,7 +99,8 @@ export default function AllLeads({ showToast, refreshCounts }) {
         </div>
       </div>
 
-      <div className="glass-card rounded-xl overflow-hidden">
+      {/* Desktop table */}
+      <div className="hidden sm:block glass-card rounded-xl overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
@@ -162,6 +163,55 @@ export default function AllLeads({ showToast, refreshCounts }) {
             </tbody>
           </table>
         </div>
+      </div>
+
+      {/* Mobile cards */}
+      <div className="sm:hidden space-y-3">
+        {loading ? (
+          <div className="flex items-center justify-center py-12">
+            <span className="material-symbols-outlined animate-spin text-on-surface-variant text-2xl">progress_activity</span>
+          </div>
+        ) : leads.length === 0 ? (
+          <div className="text-center py-12 text-on-surface-variant">
+            <span className="material-symbols-outlined text-3xl block mb-2">database</span>
+            <p className="text-sm">No new leads. Run a search to find businesses!</p>
+          </div>
+        ) : (
+          leads.map((b) => (
+            <div key={b.id} className="glass-card rounded-xl p-4 space-y-3">
+              <div className="flex items-start justify-between gap-2">
+                <div className="min-w-0 flex-1">
+                  <div className="font-medium text-on-surface text-sm truncate">{b.name}</div>
+                  <div className="text-xs text-on-surface-variant truncate">{b.address}</div>
+                </div>
+                <span className="text-[11px] px-2 py-1 rounded bg-surface-container-high text-on-surface-variant whitespace-nowrap">{b.category}</span>
+              </div>
+              <div className="flex items-center justify-between text-sm">
+                <a href={`tel:${b.phone}`} className="text-secondary hover:text-secondary/80 transition-colors font-medium">{b.phone}</a>
+                <span className="text-xs text-on-surface-variant">{b.created_at ? new Date(b.created_at).toLocaleDateString() : '-'}</span>
+              </div>
+              <div className="flex items-center gap-2 pt-1">
+                <a
+                  href={`https://wa.me/${b.phone.replace(/\s+/g, '')}`}
+                  target="_blank" rel="noopener noreferrer"
+                  className="flex-1 inline-flex items-center justify-center gap-1 px-3 py-2 rounded-lg text-xs font-medium bg-[#25D366]/20 text-[#25D366] hover:bg-[#25D366]/30 transition-colors"
+                >
+                  <span className="material-symbols-outlined text-[16px]">chat</span>
+                  WA
+                </a>
+                <button onClick={() => markContacted(b, leads.indexOf(b))}
+                  className="flex-1 inline-flex items-center justify-center gap-1 px-3 py-2 rounded-lg text-xs font-medium bg-primary/20 text-primary hover:bg-primary/30 transition-colors">
+                  <span className="material-symbols-outlined text-[16px]">check</span>
+                  Contacted
+                </button>
+                <button onClick={() => deleteLead(b, leads.indexOf(b))}
+                  className="inline-flex items-center justify-center px-3 py-2 rounded-lg text-xs font-medium bg-red-500/20 text-red-400 hover:bg-red-500/30 transition-colors">
+                  <span className="material-symbols-outlined text-[16px]">delete</span>
+                </button>
+              </div>
+            </div>
+          ))
+        )}
       </div>
     </div>
   );
