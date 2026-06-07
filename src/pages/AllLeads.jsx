@@ -119,7 +119,7 @@ export default function AllLeads({ showToast, refreshCounts }) {
                     <td style={{ fontSize: '12px', color: 'var(--muted)' }}>{b.created_at ? new Date(b.created_at).toLocaleDateString() : '-'}</td>
                     <td>
                       <div className="action-btns">
-                        <button className="wa-btn" onClick={() => window.open(`https://wa.me/${b.phone.replace(/\s+/g, '')}`, '_blank')} style={{ padding: '5px 10px', fontSize: '11px' }}>WA</button>
+                        <a className="wa-btn" href={`https://wa.me/${b.phone.replace(/\s+/g, '')}`} target="_blank" rel="noopener noreferrer" style={{ padding: '5px 10px', fontSize: '11px', textDecoration: 'none', color: 'inherit', display: 'inline-flex', alignItems: 'center', borderRadius: 'var(--radius-sm)' }}>WA</a>
                         <button className="btn btn-primary btn-sm" onClick={() => markContacted(b, i)}>✓ Contacted</button>
                         <button className="btn btn-red btn-sm" onClick={() => deleteLead(b, i)}>✕</button>
                       </div>

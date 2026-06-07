@@ -68,10 +68,10 @@ export default function Outreach({ showToast }) {
       .replaceAll('{{location}}', lead.address || '');
   }
 
-  function openWhatsApp(lead) {
+  function getWhatsAppUrl(lead) {
     const msg = personalize(lead);
     const phone = lead.phone.replace(/\s+/g, '');
-    window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`, '_blank');
+    return `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
   }
 
   async function markSent(lead) {
@@ -207,9 +207,9 @@ export default function Outreach({ showToast }) {
                     </td>
                     <td>
                       <div className="action-btns" style={{ gap: '4px' }}>
-                        <button className="wa-btn" style={{ padding: '5px 10px', fontSize: '11px' }} onClick={() => openWhatsApp(lead)}>
+                        <a className="wa-btn" href={getWhatsAppUrl(lead)} target="_blank" rel="noopener noreferrer" style={{ padding: '5px 10px', fontSize: '11px', textDecoration: 'none', color: 'inherit', display: 'inline-flex', alignItems: 'center', borderRadius: 'var(--radius-sm)' }}>
                           Open WA
-                        </button>
+                        </a>
                         <button className="btn btn-green btn-sm" onClick={() => markSent(lead)}>
                           Sent
                         </button>

@@ -203,7 +203,7 @@ export default function LeadSearch({ showToast, refreshCounts }) {
                     <td><span className="rating">★</span> {b.rating}</td>
                     <td>
                       <div className="action-btns">
-                        <button className="wa-btn" onClick={() => sendWA(i)} style={{ padding: '5px 10px', fontSize: '11px' }}>WA</button>
+                        <a className="wa-btn" href={`https://wa.me/${results[i].phone.replace(/\s+/g, '')}`} target="_blank" rel="noopener noreferrer" style={{ padding: '5px 10px', fontSize: '11px', textDecoration: 'none', color: 'inherit', display: 'inline-flex', alignItems: 'center', borderRadius: 'var(--radius-sm)' }}>WA</a>
                       </div>
                     </td>
                   </tr>
